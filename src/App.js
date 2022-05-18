@@ -1,25 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
 
+import { useState,createContext } from 'react';
+import './App.css';
+import Home from './pages/Home';
+
+const ProductsContext=createContext()
 function App() {
+  const [products,setProducts]=useState([])
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ProductsContext.Provider value={{products,setProducts}}>
+        <Home/>
+      </ProductsContext.Provider>
     </div>
   );
 }
 
 export default App;
+
+export {ProductsContext}

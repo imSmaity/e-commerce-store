@@ -1,0 +1,14 @@
+#dots{
+    width: 20px;
+    height: 20px;
+}
+
+#editProduct{
+    border: 1px solid;
+    width: 100%;
+}
+
+#editProduct #edit{
+    width: 15px;
+    height: 15px;
+}
