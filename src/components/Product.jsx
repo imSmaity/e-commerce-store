@@ -17,7 +17,7 @@ const Product = ({item}) => {
     const {p,i}=item;
 
     useEffect(()=>{
-        axios.get('https://stageapibc.monkcommerce.app/admin/shop/product?search=F&page=1')
+        axios.get('https://stageapibc.monkcommerce.app/admin/shop/product')
         .then((res)=>{
             setSelectProducts(res.data)
             setIsLoading(false)

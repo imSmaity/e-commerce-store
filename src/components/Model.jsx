@@ -3,36 +3,52 @@ import Input from './Input'
 import Loading from './Loading'
 
 
-const AllItem = () => {
+const Variant=({variant})=>{
+    return(
+        <div className='row'>
+            <div className="col-1">
+                <Input type='checkbox'/>
+            </div>
+            <div className='col-7'>
+                <div>{variant.title}</div>
+            </div>
+            <div className="col-2"></div>
+            <div className="col-2">${variant.price}</div>
+        </div>
+    )
+}
+const AllItem = ({item}) => {
   return (
     <>
         <div className='col-12'>
-            <div className='col-2'><Input type='checkbox'/></div>
-            <div className='2'></div>
-            <div className='col-8'></div>
+            <div className='row'>
+                <div className='col-1'><Input type='checkbox'/></div>
+                <div className='col-11'>{item.title}</div>
+                {/* <div className='col-1'></div>
+                <div className='col-1'></div> */}
+            </div>
         </div>
         <div className='col-1'></div>
         <div className='col-11'>
-            <div className='row'>
-                <div className="col-2">
-                    <Input type='checkbox'/>
-                </div>
-                <div className='col-6'>
-
-                </div>
-                <div className="col-2"></div>
-                <div className="col-2"></div>
-            </div>
+            {
+                item.variants.map(variant=>{
+                    return <Variant variant={variant} key={variant.id}/>;
+                    
+                })
+            }
+            
         </div>
     </>
   )
 }
 
-const Model = ({selectProducts,isLoading}) => {
+const Model = ({select}) => {
+    const {selectProducts,isLoading}=select;
+
     return (
 
         <div className="modal fade " id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false"  aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div className="modal-dialog modal-dialog-scrollable">
+            <div className="modal-dialog modal-lg modal-dialog-scrollable">
                 <div className="modal-content">
                 <div className="modal-header">
                     <h5 className="modal-title" id="staticBackdropLabel">Select Products</h5>
@@ -43,7 +59,11 @@ const Model = ({selectProducts,isLoading}) => {
                     {
                         !isLoading?
                         <div className='row'>
-                            <AllItem/>
+                            {
+                                selectProducts.map((item)=>{
+                                    return <AllItem item={item} key={item.id}/>;
+                                })
+                            }
                         </div>:
                         <div><Loading/></div>
                     }
