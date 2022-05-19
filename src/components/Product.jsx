@@ -19,7 +19,16 @@ const Product = ({item}) => {
     useEffect(()=>{
         axios.get('https://stageapibc.monkcommerce.app/admin/shop/product')
         .then((res)=>{
-            setSelectProducts(res.data)
+            let modifyData=res.data
+            modifyData=modifyData.map((pr)=>{
+                pr.indeterminate=false;
+                pr.isChecked=false;
+                return {...pr,variants:pr.variants.map((v)=>{
+                        return {...v,isChecked:false}
+                    }
+                )}
+            })
+            setSelectProducts(modifyData)
             setIsLoading(false)
         })
         .catch(err=>{
@@ -41,7 +50,7 @@ const Product = ({item}) => {
                     </div>
                     <div className='col-2'>
                         <img src={edit} alt="edit" id='edit' data-bs-toggle="modal" data-bs-target="#staticBackdrop"/>
-                        <Model select={{selectProducts,isLoading}}/>
+                        <Model select={{selectProducts,setSelectProducts,isLoading}}/>
                     </div>
                 </div>
             </div>

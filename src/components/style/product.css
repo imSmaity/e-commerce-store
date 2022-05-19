@@ -12,3 +12,15 @@
     width: 15px;
     height: 15px;
 }
+
+input[type="checkbox"]{
+
+}
+
+#p-img{
+    width: 37px;
+    height: 32px;
+    border-radius: 5px;
+    border: 1px solid lightgray;
+    padding: .1rem;
+}
