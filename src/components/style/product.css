@@ -5,6 +5,7 @@
 
 #editProduct{
     border: 1px solid;
+    border-radius: .3rem;
     width: 100%;
 }
 
@@ -23,4 +24,14 @@ input[type="checkbox"]{
     border-radius: 5px;
     border: 1px solid lightgray;
     padding: .1rem;
+}
+.variants{
+    padding: 5px;
+}
+.variants:hover{
+    background-color: lavender;
+}
+.variant{
+    border: 1px solid;
+    border-radius: 1.5rem;
 }

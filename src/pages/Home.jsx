@@ -7,7 +7,7 @@ const AddProducts=()=>{
     const {products,setProducts}=useContext(ProductsContext)
 
     const addNewProduct=()=>{
-        setProducts([...products,{name:'',discount:0,discountType:''}])
+        setProducts([...products,{id:'',title:'Select Product',discount:0,discountType:'',variants:[]}])
     }
     return (
         <div className='row'>
@@ -39,11 +39,11 @@ const AddProducts=()=>{
 const Home=()=> {
   return (
     <div className='row'>
-        <div className='col-md-3'></div>
-        <div className='col-md-6'>
+        <div className='col-md-2'></div>
+        <div className='col-md-8'>
             <AddProducts/>
         </div>
-        <div className='col-md-3'></div>
+        <div className='col-md-2'></div>
     </div>
   )
 }
