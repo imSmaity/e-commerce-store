@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Loading from '../components/Loading'
 import Search from '../components/Search'
 import { AllItem } from './AllItem'
@@ -12,7 +12,8 @@ const Model = ({select}) => {
     
 
     useEffect(()=>{
-        const newdata=selectProducts.map(p=>{
+        const products=selectProducts
+        const newdata=products.map(p=>{
             const index=selectedItems.map(o=>o.id).indexOf(p.id)
             let count=0;
             if(index!==-1){
@@ -36,7 +37,8 @@ const Model = ({select}) => {
             } 
         })
         setSelectProducts([...newdata])
-    },[selectedItems])
+    },[selectedItems,setSelectProducts])
+    
     const handleItem=(item)=>{
         const index=selectedItems.map(o=>o.id).indexOf(item.id)
         if(index===-1){
