@@ -1,23 +1,27 @@
 #dots{
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
 }
 
-#editProduct{
-    border: 1px solid;
-    border-radius: .3rem;
-    width: 100%;
-}
 
-#editProduct #edit{
+#edit{
     width: 15px;
     height: 15px;
 }
-
-input[type="checkbox"]{
-
+#edit:hover{
+    background-color: rgba(169, 169, 169, 0.445);
+    width: 25px;
+    height: 25px;
+    padding: 5px;
 }
-
+#add-d{
+    background-color: darkcyan;
+    border-radius: .3rem;
+    color: white;
+    border: none;
+    padding: .5rem;
+    width: 10rem;
+}
 #p-img{
     width: 37px;
     height: 32px;
@@ -32,6 +36,17 @@ input[type="checkbox"]{
     background-color: lavender;
 }
 .variant{
-    border: 1px solid;
+    border: 1px solid darkgray;
     border-radius: 1.5rem;
+}
+.flat{
+    padding: 6px;
+    margin-left: 4px;
+}
+.in{
+    border: 1px solid;
+    padding: 5px;
+}
+#p-title{
+    border: 1px solid darkgray;
 }

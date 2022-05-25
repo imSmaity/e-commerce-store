@@ -1,0 +1,14 @@
+#h-ts{
+    margin: .5rem;
+    border-bottom: 1px solid darkgray;
+}
+#add-p{
+    border-radius: .3rem;
+    border: 2px solid darkcyan;
+    color: darkcyan;
+    font-weight: bold;
+    background-color: white;
+    float: right;
+    width: 14rem;
+    padding: 10px;
+}

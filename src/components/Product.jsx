@@ -9,6 +9,7 @@ import Select from './Select'
 import './style/product.css'
 import Model from '../Model/Model'
 import axios from 'axios'
+import { Draggable, Droppable } from 'react-beautiful-dnd'
 
 const Product = ({item}) => {
     const {products,setProducts}=useContext(ProductsContext)
@@ -28,8 +29,10 @@ const Product = ({item}) => {
             modifyData=modifyData.map((pr)=>{
                 pr.indeterminate=false;
                 pr.isChecked=false;
+                pr.id=(pr.id).toString();
+
                 return {...pr,variants:pr.variants.map((v)=>{
-                        return {...v,isChecked:false}
+                        return {...v,id:(v.id).toString(),product_id:(v.product_id).toString(),isChecked:false}
                     }
                 )}
             })
@@ -42,7 +45,7 @@ const Product = ({item}) => {
     },[])
 
     const addProduct=(items)=>{
-        if(items.length===0) items=[{id:'',title:'Select Product',discount:0,discountType:'',variants:[]}]
+        if(items.length===0) items=[{id:'DS',title:'Select Product',discount:0,discountType:'',variants:[]}]
         setProducts([...items])
     }
   
@@ -53,63 +56,105 @@ const Product = ({item}) => {
         setProducts([...products])
     }
 
+    const deleteProduct=(product)=>{
+        const newProducts=products.filter(pf=>pf.id!==product.id)
+        setProducts([...newProducts])
+    }
     return (
-        
-        <div className='row m-2'>
-            <div className='col-1'>
-                <img src={dots} alt="dot" id='dots'/>
-                <span>{i+1}.</span>
-            </div>
-            <div className='col-5'>
-                <div className='row' id='editProduct'>
-                    <div className='col-10'>
-                        <p>{p.title}</p>
-                    </div>
-                    <div className='col-2'>
-                        <img src={edit} alt="edit" id='edit' data-bs-toggle="modal" data-bs-target="#staticBackdrop"/>
-                        <Model select={{selectProducts,setSelectProducts,isLoading,addProduct,setIsLoading}} />
+    <Draggable draggableId={p.id} index={i}>
+        {
+            (provided)=>(
+            <div 
+                className='row m-2'
+                {...provided.draggableProps}
+                
+                ref={provided.innerRef}
+            >
+                <div className='col-1'>
+                    <img src={dots} alt="dot" id='dots' {...provided.dragHandleProps}/>
+                    <span>{i+1}.</span>
+                </div>
+                <div className='col-6'>
+                    <div className='row' id='editProduct'>
+                        <div className='col-12'>
+                            <div className='row shadow-sm' id='p-title'>
+                                <div className='col-10'>
+                                    <p>{p.title}</p>
+                                </div>
+                                <div className='col-2' id='edit-dot'>
+                                    <img src={edit} alt="edit" id='edit' data-bs-toggle="modal" data-bs-target="#staticBackdrop"/>
+                                    <Model select={{selectProducts,setSelectProducts,isLoading,addProduct,setIsLoading}} />
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className='col-3'>
+                <div className='col-4'>
+                    {
+                        !isDiscount?
+                        <Button onClick={()=>setIsDiscount(true)} id='add-d'>Add Discount</Button>:
+                        <>
+                            <Input type='text' className='shadow-sm w-50 in'/>
+                            <Select className='shadow-sm flat' option={[{value:'%off',name:'% Off'},{value:'flat off',name:'flat off'}]}/>
+                        </>
+                    }
+                    <img src={_delete} style={{display:products.length===1&&'none'}} alt="delete" className='ms-3' onClick={()=>deleteProduct(p)}/>
+                </div>
+
                 {
-                    !isDiscount?
-                    <Button onclick={()=>setIsDiscount(true)}>Add Discount</Button>:
+                    variantOpen?
                     <>
-                        <Input type='text' className='w-50'/>
-                        <Select option={[{value:'%off',name:'% Off'},{value:'flat',name:'flat'}]}/>
-                    </>
+                        <div className='col-9 text-end' onClick={()=>setVariantOpen(!variantOpen)} style={{display:p.variants.length===0&&'none'}}>Hide variants</div>
+                        <Droppable type={p.id} droppableId={`droppable${p.id}`}>
+                            {
+                                (provided)=>(
+                                
+                                    <div 
+                                        className='col-12'
+                                        {...provided.droppableProps}
+                                        ref={provided.innerRef}
+                                    >
+                                        {
+                                            p.variants.map((v,i)=>{
+                                                return(
+                                                    <Draggable key={`${v.product_id}${i}`} draggableId={`${v.product_id}${i}`} index={i}>
+                                                        {
+                                                            (provided)=>(
+                                                                <div 
+                                                                    className='row p-2'
+                                                                    {...provided.draggableProps}
+                                                                    ref={provided.innerRef}
+                                                                >
+                                                                    <div className='col-1'></div>
+                                                                    <div className='col-1'>
+                                                                        <img src={dots} alt="dot" id='dots' {...provided.dragHandleProps}/>
+                                                                        <span>{i+1}.</span>
+                                                                    </div>
+                                                                    <div className='col-6 variant shadow-sm' >
+                                                                        <p>{v.title}</p>
+                                                                    </div>
+                                                                    <div className='col-3'>
+                                                                        <img src={_delete} style={{display:p.variants.length===1&&'none'}} alt="delete" onClick={()=>deleteVariant(v)}/>
+                                                                    </div>
+                                                                </div>
+                                                            )
+                                                        }
+                                                    
+                                                    </Draggable>
+                                                )
+                                            })
+                                        }
+                                        {provided.placeholder}
+                                    </div>
+                                )   
+                            }
+                        </Droppable>
+                    </>:
+                    <div className='col-9 text-end' onClick={()=>setVariantOpen(!variantOpen)} style={{display:p.variants.length===0&&'none'}}>Show variants</div>
                 }
             </div>
-            {
-                variantOpen?
-                <>
-                    <div className='col-12 text-end' onClick={()=>setVariantOpen(!variantOpen)}>Hide variants</div>
-                    <div className='col-12'>
-                        {
-                            p.variants.map((v,i)=>{
-                                return(
-                                    <div className='row p-2' key={v.id}>
-                                        <div className='col-1'></div>
-                                        <div className='col-1'>
-                                            <img src={dots} alt="dot" id='dots'/>
-                                            <span>{i+1}.</span>
-                                        </div>
-                                        <div className='col-7 variant' >
-                                            <p>{v.title}</p>
-                                        </div>
-                                        <div className='col-3'>
-                                            <img src={_delete} style={{display:p.variants.length===1&&'none'}} alt="delete" onClick={()=>deleteVariant(v)}/>
-                                        </div>
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
-                </>:
-                <div className='col-12 text-end' onClick={()=>setVariantOpen(!variantOpen)}>Show variants</div>
-            }
-        </div>
+        )}
+    </Draggable>
     )
 }
 

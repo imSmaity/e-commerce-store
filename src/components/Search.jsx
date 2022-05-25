@@ -1,7 +1,6 @@
 import axios from 'axios'
 import React from 'react'
 import Input from './Input'
-import _ from 'lodash'
 
 const Search = ({setSearch}) => {
     const {setSelectProducts,setIsLoading}=setSearch;
@@ -14,8 +13,9 @@ const Search = ({setSearch}) => {
             modifyData=modifyData.map((pr)=>{
                 pr.indeterminate=false;
                 pr.isChecked=false;
+                pr.id=(pr.id).toString();
                 return {...pr,variants:pr.variants.map((v)=>{
-                        return {...v,isChecked:false}
+                        return {...v,id:(v.id).toString(),product_id:(v.product_id).toString(),isChecked:false}
                     }
                 )}
             })
@@ -32,7 +32,7 @@ const Search = ({setSearch}) => {
     }
 
     return <Input type='search' className='w-100 p-2 mb-3' onChange={(e)=>{
-        searching(e)
+            searching(e)
         }
     }/>
 }
